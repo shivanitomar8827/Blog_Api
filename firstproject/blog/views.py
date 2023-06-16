@@ -40,9 +40,8 @@ class Blogpost(APIView):
    
     def get(self, request, format=None):
         blogs = Blog.objects.all()
-        n= len(blogs)
-        allblog = n//4 + ceil((n/4)-(n/4))
-        params = { 'no_off_blog':allblog,'range':range(1,allblog),'blog':blogs}
+        
+        params = { 'blog':blogs}
 
         serializer = BlogSerializer(blogs, many=True)
         return render(request,'index.html',params)
