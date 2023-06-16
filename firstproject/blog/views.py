@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-
+from math import ceil
 
 from rest_framework.decorators import api_view,APIView
 
@@ -40,8 +40,12 @@ class Blogpost(APIView):
    
     def get(self, request, format=None):
         blogs = Blog.objects.all()
+        n= len(blogs)
+        allblog = n//4 + ceil((n/4)-(n/4))
+        params = { 'no_off_blog':allblog,'range':range(1,allblog),'blog':blogs}
+
         serializer = BlogSerializer(blogs, many=True)
-        return Response(serializer.data)
+        return render(request,'index.html',params)
 
     def post(self, request, format=None):
         serializer = BlogSerializer(data=request.data)
